@@ -1,5 +1,4 @@
 import * as Linking from 'expo-linking';
-import UserMain from '../screens/user/UserMain';
 
 export default {
   prefixes: [Linking.makeUrl('/')],
@@ -20,6 +19,16 @@ export default {
           User: {
             screens: {
               UserMain: 'user'
+            }
+          },
+          Products: {
+            screens: {
+              ProductMain: 'product'
+            }
+          },
+          Barcode: {
+            screens: {
+              BarcodeMain: 'barcode'
             }
           }
         },

@@ -8,11 +8,11 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 
-import UserMain from '../screens/user/UserMain';
-
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, UserMainParamList } from '../types';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList, UserMainParamList, ProductMainParamList, BarcodeMainParamList } from '../types';
 import { StyleSheet, View, Text } from 'react-native';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import ProductMain from '../screens/product/ProductMain';
+import BarcodeMain from '../screens/barcode/BarcodeMain';
+import UserMain from '../screens/user/UserMain';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -23,30 +23,30 @@ export default function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="TabOne"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+
       <BottomTab.Screen
-        name="products"
-        tabstyle={{  backgroundColor: '#fff', }}
-        component={TabOneNavigator}
+        name="ProductMain"
+        component={ProductMainNavigator}
         options={{
-          tabBarLabel: 'Products',
+          tabBarLabel: 'Product',
           tabBarIcon: ({ color }) => 
             <TabBarIcon 
               name="ios-cart" 
               color={color} 
               size={30} 
-              style={{ marginBottom: -3}}
+              style={{ marginBottom: -3 }}
             />,
         }}
       />
 
       <BottomTab.Screen
-        name="camera"
-        component={TabTwoNavigator}
+        name="BarcodeMain"
+        component={BarcodeMainNavigator}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({ focused }) => {
             return (
-              <View style={styles.centered }>
+              <View style={styles.centered}>
                 <Ionicons color={'#fff'} name="ios-search" size={30} />
               </View>
             )
@@ -58,6 +58,7 @@ export default function BottomTabNavigator() {
         name="UserMain"
         component={UserMainNavigator}
         options={{
+          tabBarLabel: 'User',
           tabBarIcon: ({ color }) => 
             <TabBarIcon 
               name="ios-person" 
@@ -124,6 +125,34 @@ function UserMainNavigator() {
         options={{ headerTitle: 'User Main' }}
       />
     </UserMainStack.Navigator>
+  )
+}
+
+const BarcodeMainStack = createStackNavigator<BarcodeMainParamList>();
+
+function BarcodeMainNavigator() {
+  return (
+    <BarcodeMainStack.Navigator>
+      <BarcodeMainStack.Screen
+        name="BarcodeMainScreen"
+        component={BarcodeMain}
+        options={{ headerTitle: 'Barcode Main' }}
+      />
+    </BarcodeMainStack.Navigator>
+  )
+}
+
+const ProductMainStack = createStackNavigator<ProductMainParamList>();
+
+function ProductMainNavigator() {
+  return (
+    <ProductMainStack.Navigator>
+      <ProductMainStack.Screen
+        name="ProductMainScreen"
+        component={ProductMain}
+        options={{ headerTitle: 'Product Main' }}
+      />
+    </ProductMainStack.Navigator>
   )
 }
 

@@ -1,23 +1,20 @@
-import * as React from 'react';
-import { StyleSheet, SafeAreaView } from 'react-native';
-
-import EditScreenInfo from '../../components/EditScreenInfo';
-import { Text, View } from '../../components/Themed';
+import React, {Component} from 'react';
+import { StyleSheet, SafeAreaView, View, Text } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export default function UserMain() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <Text style={styles.title}>나의 이력</Text>
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <View style={styles.separator}/>
 
         <View style={styles.historyContainer}></View>
 
         <Text style={styles.title}>설정</Text>
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <View style={styles.separator}/>
 
         <View style={styles.setContainer}>
           <Text style={styles.subTitle}>
@@ -55,55 +52,49 @@ export default function UserMain() {
             첫 페이지, 앱의 테마 등을 설정 할 수 있습니다.
           </Text>
         </View>
-
       </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-
-  scrollContainer: {
-    flex: 1,
-    marginTop: Constants.statusBarHeight,
-  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
   scrollView: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    marginBottom: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginTop: Constants.statusBarHeight,
+    marginBottom: 20,
     backgroundColor: '#fff',
   },
-  setContainer: {
-    marginBottom: 30
-  },
   title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#1398FB'
-  },
-  subTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#000',
-    marginBottom: 10
+    color: '#1398FB'
   },
   separator: {
     marginVertical: 10,
     height: 1,
     width: '100%',
+    backgroundColor: "#eee"
   },
   historyContainer: {
     flex: 1,
     height: 300
   },
-  depthCon: {
+  setContainer: {
+    marginBottom: 30
+  },
+  subTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000',
     marginBottom: 10
   },
   subText: {
+    fontSize: 14,
     color: '#9A9898'
   }
-});
+})

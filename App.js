@@ -6,12 +6,19 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import UserMain from './screens/user/UserMain'
 import BarcodeMain from './screens/barcode/BarcodeMain'
-import ProductMain from './screens/product/ProductMain'
+
 import DetailMain from './screens/detail/detailMain';
-import DetailPrice from './screens/detail/detailPrice';
+import DetailPriceOff from './screens/detail/detailPriceOff';
+import DetailPriceOn from './screens/detail/detailPriceOn';
 import DetailCompany from './screens/detail/detailCompany';
 import DetailFaulty from './screens/detail/detailFaulty';
 import DetailSafe from './screens/detail/detailSafe';
+
+import ProductRcall from './screens/product/ProductRcall'
+import ProductRcallIn from './screens/product/ProductRcallIn'
+import ProductRcallOut from './screens/product/ProductRcallOut'
+import ProductAuth from './screens/product/ProductAuth';
+import ProductAuthDetail from './screens/product/ProductAuthDetail';
 
 
 function DetailsScreen() {
@@ -91,21 +98,45 @@ function BarcodeStackScreen() {
         animationEnabled: false,
       }}
     >
+
       <BarcodeStack.Screen name="BarcodeMain" component={BarcodeMain} />
-      <BarcodeStack.Screen name="DetailMain" component={DetailMain} />
-      <BarcodeStack.Screen name="DetailPrice" component={DetailPrice} />
-      <BarcodeStack.Screen name="DetailCompany" component={DetailCompany} />
-      <BarcodeStack.Screen name="DetailFaulty" component={DetailFaulty} />
-      <BarcodeStack.Screen name="DetailSafe" component={DetailSafe} />
+      <ProductStack.Screen name="DetailMain" component={DetailMain} />
+      <ProductStack.Screen name="DetailPriceOff" component={DetailPriceOff} />
+      <ProductStack.Screen name="DetailPriceOn" component={DetailPriceOn} />
+      <ProductStack.Screen name="DetailCompany" component={DetailCompany} />
+      <ProductStack.Screen name="DetailFaulty" component={DetailFaulty} />
+      <ProductStack.Screen name="DetailSafe" component={DetailSafe} />
+
     </BarcodeStack.Navigator>
+  )
+}
+
+const ProductStack = createStackNavigator();
+function ProductStackScreen() {
+  return(
+    <ProductStack.Navigator 
+      screenOptions={{
+        headerShown: false,
+        animationEnabled: false,
+      }}
+    >
+      <ProductStack.Screen name="ProductRcall" component={ProductRcall} />
+      <ProductStack.Screen name="ProductRcallIn" component={ProductRcallIn} />
+      <ProductStack.Screen name="ProductRcallOut" component={ProductRcallOut} />
+      <ProductStack.Screen name="ProductAuth" component={ProductAuth} />
+      <ProductStack.Screen name="ProductAuthDetail" component={ProductAuthDetail} />
+
+    </ProductStack.Navigator>
   )
 }
 
 const Tab = createBottomTabNavigator();
 export default function App() {
+
   return (
     <NavigationContainer>
       <Tab.Navigator
+        initialRouteName="BarcodeMain"
         tabBarOptions={{
           activeTintColor: '#1398FB',
           inactiveTintColor: 'gray',
@@ -113,7 +144,7 @@ export default function App() {
 
         <Tab.Screen 
           name="ProductsMain" 
-          component={ProductMain} 
+          component={ProductStackScreen} 
           options={{
             tabBarLabel: 'Products',
             tabBarIcon: ({ color }) => {
@@ -127,7 +158,8 @@ export default function App() {
           component={BarcodeStackScreen} 
           options={{
             tabBarLabel:'',
-            tabBarIcon: () => {
+            tabBarIcon: ({focused, }) => {
+              console.log(focused)
               return (
                 <View style={styles.centered}>
                   <Ionicons color={'#fff'} name="ios-search" size={30} />
@@ -146,7 +178,6 @@ export default function App() {
               return <Ionicons name='ios-person' size={30} color={color} />
             }
           }}
-        
         />
       </Tab.Navigator>
     </NavigationContainer>

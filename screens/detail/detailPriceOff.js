@@ -1,19 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, SafeAreaView, View, Text, Image, FlatList } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
+import TabView from '../../component/TabView'
 import TrafficSign from '../../component/TrafficSign'
 
-
-export default function DetailSafe({route, navigation}) {
+export default function DetailPriceOff({ route, navigation }) {
   const { params } = route.params;
   const { navigate } = navigation;
 
   const [data, setData] = useState([]);
-
+  
   useEffect(() => {
-    fetch(`https://raw.githubusercontent.com/huvso/json/master/05safe/${params}.json`)
+    fetch(`https://raw.githubusercontent.com/huvso/json/master/02price/${params}-off.json`)
     .then((response) => response.json())
     .then((json) => setData(json))
     .catch((error) => console.error(error));
@@ -30,36 +30,29 @@ export default function DetailSafe({route, navigation}) {
 
   const DATA = data.list
 
-  const Item = ({ category, review, star_point, emotion, url }) => (
-    <View style={{flex: 1, flexDirection: 'row', borderBottomColor: '#bdbdbd', borderBottomWidth: 1, paddingHorizontal: 10}}>
-      <View style={{flex: 1.5, justifyContent:'center', alignItems:'center', height: 70}}>
-        <Text>{category}</Text>
+  const Item = ({ area, seller, price, ago1 }) => (
+    <View style={{flex: 1, flexDirection: 'row', borderBottomColor: '#bdbdbd', borderBottomWidth: 1}}>
+      <View style={{flex: 1, justifyContent:'center', alignItems:'center', height: 45}}>
+        <Text>{area}</Text>
       </View>
-      <View style={{flex: 4, justifyContent:'center', height: 70}}>
-        <Text style={{fontSize:10}}>{review}</Text>
+      <View style={{flex: 2, justifyContent:'center', alignItems:'center', height: 45}}>
+        <Text>{seller}</Text>
       </View>
-      <View style={{flex: 1.5, justifyContent:'center', alignItems:'center', height: 70}}>
-        <Text><Ionicons name="ios-star" size={18} color={'red'} /></Text>
-        <Text>{star_point}/5.0</Text>
+      <View style={{flex: 1, justifyContent:'center', alignItems:'center', height: 45}}>
+        <Text>{price}</Text>
       </View>
-      <View style={{flex: 1, justifyContent:'center', alignItems:'center', height: 70}}>
-        <Text>{emotion}</Text>
-      </View>
-      <View style={{flex: 1, justifyContent:'center', alignItems:'center', height: 70}}>
-          <Text style={{fontWeight: 'bold'}}>
-            <Ionicons name="ios-link" size={18} color={'black'} />
-          </Text>
+      <View style={{flex: 1.5, justifyContent:'center', alignItems:'center', height: 45}}>
+        <Text>{ago1}</Text>
       </View>
     </View>
   );
 
   const renderItem = ({ item }) => (
     <Item 
-      category={item.category}
-      review={item.review}
-      star_point={item.star_point}
-      emotion={item.emotion}
-      url={item.url}
+      area={item.area}
+      seller={item.seller}
+      price={item.price}
+      ago1={item.ago1}
      />
   );
 
@@ -82,7 +75,7 @@ export default function DetailSafe({route, navigation}) {
             <Text style={{fontWeight: 'bold', fontSize: 16}}>정보</Text>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 1, height: '100%', justifyContent:'center', alignItems:'center'}}>
+        <View style={{flex: 1, height: '100%', justifyContent:'center', alignItems:'center', backgroundColor: '#1398FB'}}>
           <TouchableOpacity style={{alignSelf: 'stretch', justifyContent:'center', alignItems:'center'}}
             onPress={() => {
               navigate("DetailPriceOff", {
@@ -90,8 +83,8 @@ export default function DetailSafe({route, navigation}) {
               });
             }}
           >
-            <Text style={{fontWeight: 'bold', fontSize: 16}}>가격</Text>
-            <Text style={{fontWeight: 'bold', fontSize: 16}}>정보</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fff'}}>가격</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fff'}}>정보</Text>
             <Text style={{fontSize: 10, color: '#bababa', fontWeight: 'bold'}}>평균 ￦{ product.avg_price }</Text>
           </TouchableOpacity>
         </View>
@@ -119,45 +112,69 @@ export default function DetailSafe({route, navigation}) {
             <TrafficSign grade={product.fail_grade}/>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 1, height: '100%', justifyContent:'center', alignItems:'center', backgroundColor: '#1398FB'}}>
+        <View style={{flex: 1, height: '100%', justifyContent:'center', alignItems:'center'}}>
           <TouchableOpacity style={{alignSelf: 'stretch', justifyContent:'center', alignItems:'center'}}
             onPress={() => {
               navigate("DetailSafe", {
                 params: params
               });
             }}>
-            <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fff'}}>안전</Text>
-            <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fff'}}>정보</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 16}}>안전</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 16}}>정보</Text>
             <Text style={{fontSize: 10}} ><Ionicons name="ios-star" size={10} color={'#ffd52b'} /> { product.star_point } </Text>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{flexDirection: 'row', borderBottomColor: '#bdbdbd', borderBottomWidth: 1, paddingHorizontal: 10}}>
-        <View style={{flex: 1.5, justifyContent:'center', alignItems:'center', height: 40}}>
-          <Text style={{fontWeight: 'bold', fontSize: 18}}>구분</Text>
+      
+      <View style={{flex: 1, paddingHorizontal: 20, backgroundColor: 'white'}}>
+        <View style={{marginTop: 5}}>
+          <TabView
+            firstName="Off-Line"
+            secondName="On-Line"
+            selected={0}
+            changedComName="DetailPriceOn"
+            params={params}
+            navigation={navigation}
+          />
         </View>
-        <View style={{flex: 4, justifyContent:'center', alignItems:'center', height: 40}}>
-          <Text style={{fontWeight: 'bold', fontSize: 18}}>리뷰</Text>
-        </View>
-        <View style={{flex: 1.5, justifyContent:'center', alignItems:'center', height: 40}}>
-          <Text style={{fontWeight: 'bold', fontSize: 18}}>별점</Text>
-        </View>
-        <View style={{flex: 1, justifyContent:'center', alignItems:'center', height: 40}}>
-          <Text style={{fontWeight: 'bold', fontSize: 18}}>감정</Text>
-        </View>
-        <View style={{flex: 1, justifyContent:'center', alignItems:'center', height: 40}}>
-          <Text style={{fontWeight: 'bold', fontSize: 18}}>
-            <Ionicons name="ios-link" size={20} color={'black'} />
-          </Text>
-        </View>
-      </View>
 
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        style={{marginBottom: 25}}
-      />
+        <View style={{flexDirection: 'row', height: 80, backgroundColor: 'white' }}>
+          <View style={{flex: 1, justifyContent:'center', alignItems:'center', backgroundColor: '#fff'}}>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>최대</Text>
+            <Text style={{fontSize: 15, fontWeight: 'bold', color: 'red'}}>{data.max}</Text>
+          </View>
+          <View style={{flex: 1, justifyContent:'center', alignItems:'center'}}>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>평균</Text>
+            <Text style={{fontSize: 15, fontWeight: 'bold', color: '#6e6e6e'}}>{data.avg}</Text>
+          </View>
+          <View style={{flex: 1, justifyContent:'center', alignItems:'center'}}>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>최소</Text>
+            <Text style={{fontSize: 15, fontWeight: 'bold', color: '#1398FB'}}>{data.min}</Text>
+          </View>
+        </View>
+
+        <View style={{flexDirection: 'row', borderBottomColor: '#bdbdbd', borderBottomWidth: 1, marginTop: 20}}>
+          <View style={{flex: 1, justifyContent:'center', alignItems:'center', height: 40}}>
+            <Text style={{fontWeight: 'bold', fontSize: 18}}>지역</Text>
+          </View>
+          <View style={{flex: 2, justifyContent:'center', alignItems:'center', height: 40}}>
+            <Text style={{fontWeight: 'bold', fontSize: 18}}>판매점</Text>
+          </View>
+          <View style={{flex: 1, justifyContent:'center', alignItems:'center', height: 40}}>
+            <Text style={{fontWeight: 'bold', fontSize: 18}}>가격</Text>
+          </View>
+          <View style={{flex: 1.5, justifyContent:'center', alignItems:'center', height: 40}}>
+            <Text style={{fontWeight: 'bold', fontSize: 18}}>1주전</Text>
+          </View>
+        </View>
+
+        <FlatList
+              data={DATA}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+              style={{marginBottom: 10}}
+            />
+      </View>
     </View>
   )
 }

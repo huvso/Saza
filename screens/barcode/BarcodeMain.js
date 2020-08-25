@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { StyleSheet, SafeAreaView, View, Text, Dimensions, Picker, Button } from 'react-native';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
@@ -14,15 +14,28 @@ export default function BarcodeMain() {
   const [value, onChangeText] = useState('');
   const navigation = useNavigation();
 
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
   const handleBarCodeScanned = (result) => {
     let { type, data } = result
-
     if (type === 32) {
       navigation.navigate('DetailMain', {
         params: data
       })
     }
   };
+
+  if (hasPermission === null) {
+    return <Text></Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>카메라에 액세스 할 수 없음</Text>;
+  }
 
   return (
     <View style={{flex: 1, flexDirection: 'column', marginTop: Constants.statusBarHeight}}>
@@ -62,8 +75,8 @@ export default function BarcodeMain() {
             value={value}
           />
           <View style={{flex: 3, height: '100%'}}>
-            <TouchableOpacity style={{flex:1, height: '100%', backgroundColor: '#1398FB', alignItems: 'center', justifyContent: 'center', borderRadius: 5}}>
-              <Text style={styles.buttonText}>검색</Text>
+            <TouchableOpacity style={{flex:1, height: 50, backgroundColor:'white', alignItems: 'center', justifyContent: 'center', borderRadius: 5}}>
+              <Text style={{fontWeight:'bold'}}>검색</Text>
             </TouchableOpacity>
           </View>
         </View>

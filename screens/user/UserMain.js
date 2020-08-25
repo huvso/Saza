@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
-import { StyleSheet, SafeAreaView, View, Text } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
+import {
+  LineChart,
+} from 'expo-chart-kit'
 
 export default function UserMain() {
   return (
@@ -11,7 +14,42 @@ export default function UserMain() {
         <Text style={styles.title}>나의 이력</Text>
         <View style={styles.separator}/>
 
-        <View style={styles.historyContainer}></View>
+        <View style={styles.historyContainer}>
+          <Text style={styles.subTitle}>구매 회수</Text>
+          <LineChart
+            data={{
+              labels: ['20-08-09', '20-08-10', '20-08-11', '20-08-12', '20-08-13', '20-08-14'],
+              datasets: [{
+                data: [
+                  parseInt(Math.random() * 20),
+                  parseInt(Math.random() * 10),
+                  parseInt(Math.random() * 20),
+                  parseInt(Math.random() * 10),
+                  parseInt(Math.random() * 20),
+                  parseInt(Math.random() * 10)
+                ]
+              }]
+            }}
+            width={Dimensions.get('window').width - 30} // from react-native
+            height={220}
+            chartConfig={{
+              backgroundColor: '#fff',
+              backgroundGradientFrom: '#fff',
+              backgroundGradientTo: '#fff',
+              decimalPlaces: 0, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              style: {
+                borderRadius: 16
+              }
+            }}
+            bezier
+            style={{
+              marginVertical: 8,
+              marginLeft: -20,
+              borderRadius: 16
+            }}
+          />
+        </View>
 
         <Text style={styles.title}>설정</Text>
         <View style={styles.separator}/>
@@ -82,7 +120,6 @@ const styles = StyleSheet.create({
   },
   historyContainer: {
     flex: 1,
-    height: 300
   },
   setContainer: {
     marginBottom: 30
